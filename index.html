@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tropical Ink - Safi's Island</title>
+
+    <!-- PWA Meta Tags -->
+    <meta name="description" content="Safi's Tropical Ink - a creative island for writing and self-expression">
+    <meta name="theme-color" content="#0891B2">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Tropical Ink">
+    <meta name="mobile-web-app-capable" content="yes">
+
+    <!-- Favicon -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🌺</text></svg>">
+
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Nunito:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --coral: #F97066;
+            --coral-light: #FDA4AF;
+            --coral-glow: rgba(249, 112, 102, 0.5);
+            --ocean: #0891B2;
+            --ocean-light: #22D3EE;
+            --ocean-glow: rgba(8, 145, 178, 0.5);
+            --palm: #059669;
+            --palm-light: #34D399;
+            --palm-glow: rgba(5, 150, 105, 0.5);
+            --sunset: #F59E0B;
+            --sunset-light: #FCD34D;
+            --sunset-glow: rgba(245, 158, 11, 0.5);
+            --sand: #D4A574;
+            --deep-ocean: #0c1929;
+            --orchid: #C084FC;
+            --orchid-light: #DDD6FE;
+            --orchid-glow: rgba(192, 132, 252, 0.5);
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #3b82c4 0%, #5ba3d9 25%, #4a94cc 50%, #5ba3d9 75%, #3b82c4 100%);
+            min-height: 100vh;
+            color: #fff;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Floating Tropical Elements */
+        .leaves-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 1;
+        }
+        .leaf {
+            position: absolute;
+            font-size: 1.5em;
+            animation: leafFloat linear infinite;
+            opacity: 0.6;
+        }
+        @keyframes leafFloat {
+            0% { transform: translateX(-50px) translateY(0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.6; }
+            90% { opacity: 0.6; }
+            100% { transform: translateX(calc(100vw + 50px)) translateY(80px) rotate(360deg); opacity: 0; }
+        }
+
+        /* Tropical Flower Icon */
+        .mystic-lotus {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            font-size: 2.5em;
+            animation: lotusPulse 3s ease-in-out infinite;
+            z-index: 100;
+            cursor: pointer;
+            filter: drop-shadow(0 0 20px var(--coral-glow)) drop-shadow(0 0 40px var(--sunset-glow));
+        }
+        @keyframes lotusPulse {
+            0%, 100% { transform: translateY(0) scale(1); filter: drop-shadow(0 0 20px var(--coral-glow)); }
+            50% { transform: translateY(-8px) scale(1.1); filter: drop-shadow(0 0 40px var(--sunset-glow)); }
+        }
+
+        /* Tropical Lights (replacing fireflies) */
+        .fireflies-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: 0;
+        }
+        .firefly {
+            position: absolute;
+            width: 4px;
+            height: 4px;
+            background: var(--sunset-light);
+            border-radius: 50%;
+            animation: fireflyGlow ease-in-out infinite;
+            box-shadow: 0 0 8px var(--sunset-glow);
+        }
+        @keyframes fireflyGlow {
+            0%, 100% { opacity: 0.2; transform: scale(1) translateY(0); }
+            50% { opacity: 1; transform: scale(1.5) translateY(-20px); }
+        }
+
+        /* Aurora / Ocean Shimmer */
+        .aurora {
+            position: fixed;
+            top: -50%;
+            left: 50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(
+                from 0deg,
+                transparent 0deg,
+                rgba(8, 145, 178, 0.06) 15deg,
+                transparent 30deg,
+                rgba(249, 112, 102, 0.06) 45deg,
+                transparent 60deg,
+                rgba(245, 158, 11, 0.06) 75deg,
+                transparent 90deg
+            );
+            animation: auroraSpin 40s linear infinite;
+            pointer-events: none;
+            z-index: 0;
+        }
+        @keyframes auroraSpin {
+            from { transform: translate(-50%, -50%) rotate(0deg); }
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            min-height: 100vh;
+            position: relative;
+            z-index: 10;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            padding: 40px 0 30px;
+        }
+        /* Cover Video */
+        .cover-video-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .cover-video {
+            width: 100%;
+            max-width: 750px;
+            height: auto;
+            border-radius: 20px;
+            border: 4px solid var(--coral);
+            box-shadow:
+                0 0 30px var(--ocean-glow),
+                0 0 60px var(--coral-glow),
+                0 10px 40px rgba(0, 0, 0, 0.4);
+            animation: coverGlow 4s ease-in-out infinite;
+            object-fit: cover;
+        }
+        @keyframes coverGlow {
+            0%, 100% {
+                box-shadow:
+                    0 0 30px var(--ocean-glow),
+                    0 0 60px var(--coral-glow),
+                    0 10px 40px rgba(0, 0, 0, 0.4);
+            }
+            50% {
+                box-shadow:
+                    0 0 40px var(--coral-glow),
+                    0 0 80px var(--ocean-glow),
+                    0 15px 50px rgba(0, 0, 0, 0.5);
+            }
+        }
+        @media (max-width: 600px) {
+            .cover-video {
+                max-width: 100%;
+            }
+        }
+
+        .header .greeting {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            color: var(--sunset);
+            margin-bottom: 8px;
+            text-shadow: 0 0 20px var(--sunset-glow);
+            font-style: italic;
+        }
+        .header h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8em;
+            font-weight: 600;
+            background: linear-gradient(135deg, var(--coral-light), var(--sunset), var(--ocean-light), var(--coral-light));
+            background-size: 300% 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: shimmer 4s ease-in-out infinite;
+            margin-bottom: 10px;
+            letter-spacing: 4px;
+        }
+        @keyframes shimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .header .subtitle {
+            color: var(--ocean-light);
+            font-size: 1.1em;
+            font-weight: 300;
+            letter-spacing: 2px;
+        }
+        .header .tagline {
+            font-family: 'Playfair Display', serif;
+            font-size: 1em;
+            color: var(--sunset-light);
+            margin-top: 10px;
+            font-style: italic;
+        }
+
+        /* Main Card */
+        .main-card {
+            background: linear-gradient(135deg, rgba(12, 25, 41, 0.8) 0%, rgba(26, 26, 62, 0.8) 100%);
+            backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 35px;
+            box-shadow:
+                0 25px 80px rgba(0, 0, 0, 0.5),
+                0 0 60px var(--ocean-glow),
+                inset 0 1px 0 rgba(8, 145, 178, 0.2);
+            border: 2px solid rgba(8, 145, 178, 0.3);
+        }
+
+        /* Creative Mood Check */
+        .energy-question {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .energy-question h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.7em;
+            color: var(--sunset);
+            margin-bottom: 10px;
+            text-shadow: 0 0 25px var(--sunset-glow);
+        }
+        .energy-question p {
+            color: var(--ocean-light);
+            font-size: 1em;
+        }
+
+        /* Mood Grid */
+        .energy-grid {
+            display: grid;
+            gap: 15px;
+        }
+
+        .energy-option {
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            padding: 22px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+        .energy-option:hover {
+            transform: translateX(8px) scale(1.02);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+        }
+        .energy-option.selected {
+            border-color: var(--sunset);
+            transform: scale(1.03);
+            box-shadow: 0 0 30px var(--sunset-glow);
+        }
+
+        /* CREATIVE MOODS */
+        .energy-option.flowing {
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        }
+        .energy-option.sparking {
+            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
+        }
+        .energy-option.stormy {
+            background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%);
+        }
+        .energy-option.drifting {
+            background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%);
+        }
+        .energy-option.beached {
+            background: linear-gradient(135deg, #F97066 0%, #E11D48 100%);
+        }
+
+        .energy-icon {
+            font-size: 2.8em;
+            width: 65px;
+            text-align: center;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+        }
+        .energy-info h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.4em;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .energy-info p {
+            font-size: 0.95em;
+            color: rgba(255, 255, 255, 0.9);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+        }
+
+        /* Continue Button */
+        .continue-btn {
+            display: block;
+            width: 100%;
+            padding: 20px;
+            margin-top: 28px;
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--coral) 50%, var(--ocean) 100%);
+            background-size: 200% 200%;
+            color: #fff;
+            border: 2px solid var(--coral);
+            border-radius: 16px;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            animation: buttonShimmer 4s ease-in-out infinite;
+            box-shadow: 0 0 20px var(--ocean-glow);
+        }
+        @keyframes buttonShimmer {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+        .continue-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 0 40px var(--ocean-glow), 0 15px 40px var(--coral-glow);
+        }
+        .continue-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            transform: none;
+            animation: none;
+            box-shadow: none;
+        }
+
+        /* Sections */
+        .soul-section {
+            margin-top: 35px;
+            padding-top: 30px;
+            border-top: 2px solid var(--ocean);
+            box-shadow: 0 -1px 20px var(--ocean-glow);
+        }
+        .soul-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--sunset);
+            margin-bottom: 12px;
+            font-size: 1.4em;
+            text-align: center;
+            text-shadow: 0 0 20px var(--sunset-glow);
+        }
+        .soul-section > p {
+            text-align: center;
+            color: var(--ocean-light);
+            margin-bottom: 22px;
+            font-size: 0.95em;
+        }
+
+        /* Writing Tool Cards (2x2 grid) */
+        .holistic-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        @media (max-width: 600px) {
+            .holistic-grid { grid-template-columns: 1fr; }
+        }
+        .holistic-card {
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.4s;
+            border: 3px solid transparent;
+            text-align: center;
+        }
+        .holistic-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+        .holistic-card.selected {
+            border-color: var(--sunset);
+        }
+        .holistic-card.freewrite { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
+        .holistic-card.poetry { background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%); }
+        .holistic-card.storytelling { background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%); }
+        .holistic-card.letters { background: linear-gradient(135deg, #F97066 0%, #E11D48 100%); }
+        .holistic-card-header {
+            margin-bottom: 10px;
+        }
+        .holistic-card-header .icon { font-size: 2.2em; display: block; margin-bottom: 8px; }
+        .holistic-card-header h4 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.1em;
+            font-weight: 600;
+            color: #fff;
+        }
+        .holistic-card p { font-size: 0.85em; opacity: 0.9; color: rgba(255,255,255,0.9); }
+        .holistic-detail {
+            display: none;
+            margin-top: 22px;
+            padding: 22px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+        }
+        .holistic-detail.active { display: block; }
+        .holistic-detail h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--sunset);
+            margin-bottom: 15px;
+            font-size: 1.2em;
+        }
+        .holistic-detail p, .holistic-detail li { color: rgba(255, 255, 255, 0.9); line-height: 1.7; }
+        .holistic-detail ul { padding-left: 20px; margin-top: 10px; list-style: none; }
+        .holistic-detail ul li::before { content: ''; }
+
+        /* Practice Items */
+        .practice-list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+        .practice-item {
+            background: rgba(255, 255, 255, 0.08);
+            border: 2px solid rgba(8, 145, 178, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .practice-item:hover {
+            border-color: var(--ocean);
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px var(--ocean-glow);
+        }
+        .practice-item.expanded {
+            border-color: var(--sunset);
+            background: rgba(245, 158, 11, 0.1);
+        }
+        .practice-header h4 {
+            font-family: 'Playfair Display', serif;
+            color: #fff;
+            font-size: 1.15em;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .practice-content {
+            display: none;
+            margin-top: 18px;
+            padding-top: 18px;
+            border-top: 1px solid rgba(255, 255, 255, 0.15);
+        }
+        .practice-item.expanded .practice-content {
+            display: block;
+        }
+        .practice-ideas {
+            list-style: none;
+            padding: 0;
+        }
+        .practice-ideas li {
+            padding: 10px 0 10px 16px;
+            position: relative;
+            line-height: 1.6;
+            color: rgba(255, 255, 255, 0.9);
+            border-left: 3px solid var(--ocean);
+            margin-bottom: 8px;
+            padding-left: 16px;
+        }
+        .practice-tip {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.15) 0%, rgba(8, 145, 178, 0.15) 100%);
+            border-left: 4px solid var(--sunset);
+            padding: 15px 18px;
+            margin-top: 18px;
+            border-radius: 0 12px 12px 0;
+            font-size: 0.95em;
+            color: var(--sunset-light);
+            font-style: italic;
+        }
+
+        /* Writer's Toolkit Cards */
+        .neuro-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+        }
+        @media (max-width: 600px) {
+            .neuro-grid { grid-template-columns: 1fr; }
+        }
+        .neuro-card {
+            border-radius: 16px;
+            padding: 20px;
+            cursor: pointer;
+            transition: all 0.4s;
+            border: 3px solid transparent;
+        }
+        .neuro-card:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.3);
+        }
+        .neuro-card.selected {
+            border-color: var(--sunset);
+        }
+        .neuro-card.character { background: linear-gradient(135deg, #F97066 0%, #E11D48 100%); color: #fff; }
+        .neuro-card.world { background: linear-gradient(135deg, #059669 0%, #047857 100%); color: #fff; }
+        .neuro-card.voice { background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%); color: #fff; }
+        .neuro-card.plot { background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%); color: #fff; }
+        .neuro-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+        .neuro-card-header .icon { font-size: 2em; }
+        .neuro-card-header h4 { font-size: 1.1em; font-weight: 700; }
+        .neuro-card p { font-size: 0.9em; opacity: 0.95; }
+        .neuro-detail {
+            display: none;
+            margin-top: 22px;
+            padding: 22px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .neuro-detail.active { display: block; }
+        .neuro-detail h4 { color: var(--sunset); margin-bottom: 15px; }
+        .neuro-detail p, .neuro-detail li { color: rgba(255, 255, 255, 0.9); line-height: 1.6; }
+        .neuro-detail ul { padding-left: 20px; margin-top: 10px; }
+
+        /* Island Wisdom Section */
+        .nature-section {
+            background: linear-gradient(135deg, rgba(8, 145, 178, 0.15) 0%, rgba(249, 112, 102, 0.15) 100%);
+            border-radius: 20px;
+            padding: 25px;
+            margin-top: 25px;
+            border: 2px solid rgba(8, 145, 178, 0.3);
+        }
+        .nature-section h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--ocean-light);
+            font-size: 1.2em;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+        .nature-wisdom {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .nature-wisdom { grid-template-columns: 1fr; }
+        }
+        .nature-message {
+            padding: 15px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .nature-message:hover {
+            background: rgba(245, 158, 11, 0.2);
+            transform: translateY(-3px);
+        }
+        .nature-message .nature-icon { font-size: 2em; margin-bottom: 8px; }
+        .nature-message p { font-size: 0.85em; color: rgba(255,255,255,0.8); }
+
+        /* Tidal Thoughts (Decision Matrix) */
+        .matrix-section {
+            margin-top: 35px;
+            padding-top: 30px;
+            border-top: 2px solid var(--orchid);
+        }
+        .matrix-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--orchid-light);
+            margin-bottom: 10px;
+            font-size: 1.4em;
+            text-align: center;
+            text-shadow: 0 0 15px var(--orchid-glow);
+        }
+        .matrix-input { margin-bottom: 20px; }
+        .matrix-text-input {
+            width: 100%;
+            padding: 16px 20px;
+            border: 2px solid rgba(192, 132, 252, 0.4);
+            border-radius: 12px;
+            font-family: inherit;
+            font-size: 1em;
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+        }
+        .matrix-text-input::placeholder { color: rgba(192, 132, 252, 0.6); }
+        .matrix-text-input:focus {
+            outline: none;
+            border-color: var(--orchid);
+            box-shadow: 0 0 20px var(--orchid-glow);
+        }
+        .decision-matrix {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+        .matrix-labels-top {
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr;
+            gap: 8px;
+            text-align: center;
+        }
+        .matrix-label {
+            font-size: 0.8em;
+            color: var(--sunset);
+            font-weight: 600;
+        }
+        .matrix-row {
+            display: grid;
+            grid-template-columns: 80px 1fr 1fr;
+            gap: 8px;
+        }
+        .matrix-label-side {
+            font-size: 0.7em;
+            color: var(--ocean-light);
+            font-weight: 600;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            transform: rotate(180deg);
+            text-align: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .matrix-quadrant {
+            min-height: 120px;
+            border-radius: 12px;
+            padding: 12px;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+        }
+        .matrix-quadrant:hover { transform: scale(1.02); }
+        .matrix-quadrant.do-now {
+            background: linear-gradient(135deg, rgba(249, 112, 102, 0.3) 0%, rgba(249, 112, 102, 0.15) 100%);
+            border-color: rgba(249, 112, 102, 0.4);
+        }
+        .matrix-quadrant.do-now:hover { box-shadow: 0 0 20px var(--coral-glow); }
+        .matrix-quadrant.schedule {
+            background: linear-gradient(135deg, rgba(8, 145, 178, 0.3) 0%, rgba(8, 145, 178, 0.15) 100%);
+            border-color: rgba(8, 145, 178, 0.4);
+        }
+        .matrix-quadrant.schedule:hover { box-shadow: 0 0 20px var(--ocean-glow); }
+        .matrix-quadrant.delegate {
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.3) 0%, rgba(5, 150, 105, 0.15) 100%);
+            border-color: rgba(5, 150, 105, 0.4);
+        }
+        .matrix-quadrant.delegate:hover { box-shadow: 0 0 20px var(--palm-glow); }
+        .matrix-quadrant.drop {
+            background: linear-gradient(135deg, rgba(128, 128, 128, 0.3) 0%, rgba(128, 128, 128, 0.15) 100%);
+            border-color: rgba(128, 128, 128, 0.4);
+        }
+        .matrix-quadrant.drop:hover { box-shadow: 0 0 20px rgba(128, 128, 128, 0.5); }
+        .quadrant-header {
+            font-size: 0.85em;
+            font-weight: 700;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+        .quadrant-items {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        .matrix-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 10px;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: 8px;
+            font-size: 0.85em;
+            color: #fff;
+        }
+        .matrix-item-delete {
+            background: none;
+            border: none;
+            color: rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            font-size: 1em;
+            padding: 0;
+            margin-left: auto;
+        }
+        .matrix-item-delete:hover { color: #ff4757; }
+        .matrix-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 15px;
+        }
+        .save-status { font-size: 0.9em; color: #4CAF50; }
+        .quick-add-btn {
+            padding: 12px 16px;
+            border-radius: 25px;
+            font-size: 0.9em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            border: 2px solid transparent;
+            font-family: inherit;
+            -webkit-tap-highlight-color: transparent;
+            touch-action: manipulation;
+        }
+        .quick-add-btn:active { transform: scale(0.95); }
+        .do-now-btn {
+            background: linear-gradient(135deg, rgba(249, 112, 102, 0.4) 0%, rgba(249, 112, 102, 0.2) 100%);
+            border-color: rgba(249, 112, 102, 0.5);
+            color: #fff;
+        }
+        .do-now-btn:hover { background: rgba(249, 112, 102, 0.5); box-shadow: 0 0 15px var(--coral-glow); }
+        .schedule-btn {
+            background: linear-gradient(135deg, rgba(8, 145, 178, 0.4) 0%, rgba(8, 145, 178, 0.2) 100%);
+            border-color: rgba(8, 145, 178, 0.5);
+            color: #fff;
+        }
+        .schedule-btn:hover { background: rgba(8, 145, 178, 0.5); box-shadow: 0 0 15px var(--ocean-glow); }
+        .delegate-btn {
+            background: linear-gradient(135deg, rgba(5, 150, 105, 0.4) 0%, rgba(5, 150, 105, 0.2) 100%);
+            border-color: rgba(5, 150, 105, 0.5);
+            color: #fff;
+        }
+        .delegate-btn:hover { background: rgba(5, 150, 105, 0.5); box-shadow: 0 0 15px var(--palm-glow); }
+        .drop-btn {
+            background: linear-gradient(135deg, rgba(128, 128, 128, 0.4) 0%, rgba(128, 128, 128, 0.2) 100%);
+            border-color: rgba(128, 128, 128, 0.5);
+            color: #fff;
+        }
+        .drop-btn:hover { background: rgba(128, 128, 128, 0.5); }
+        .clear-dump-btn {
+            padding: 10px 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(192, 132, 252, 0.4);
+            border-radius: 10px;
+            font-size: 0.9em;
+            color: var(--orchid-light);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .clear-dump-btn:hover { background: rgba(192, 132, 252, 0.2); border-color: var(--orchid); }
+        @media (max-width: 600px) {
+            .matrix-labels-top, .matrix-row { grid-template-columns: 50px 1fr 1fr; }
+            .matrix-label-side { font-size: 0.6em; }
+            .matrix-quadrant { min-height: 100px; padding: 10px; }
+            .quadrant-header { font-size: 0.75em; }
+        }
+
+        /* Ocean Breathing */
+        .breath-timer {
+            text-align: center;
+            padding: 30px;
+            background: rgba(8, 145, 178, 0.15);
+            border-radius: 20px;
+            margin: 20px 0;
+        }
+        .breath-circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--coral) 100%);
+            margin: 0 auto 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3em;
+            color: #fff;
+            animation: breathe 8s ease-in-out infinite;
+            box-shadow: 0 0 30px var(--ocean-glow);
+        }
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.2); }
+            50% { transform: scale(1.2); }
+            75% { transform: scale(1); }
+        }
+        .breath-instruction {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.2em;
+            color: var(--sunset);
+        }
+
+        /* Writing Journal */
+        .journal-section {
+            margin-top: 30px;
+            padding-top: 28px;
+            border-top: 2px solid var(--coral);
+        }
+        .journal-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--coral-light);
+            margin-bottom: 10px;
+            font-size: 1.4em;
+            text-align: center;
+        }
+        .prompt-chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
+            margin-bottom: 18px;
+        }
+        .prompt-chip {
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(8, 145, 178, 0.4);
+            border-radius: 25px;
+            font-size: 0.9em;
+            color: var(--ocean-light);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .prompt-chip:hover {
+            background: rgba(8, 145, 178, 0.2);
+            transform: translateY(-3px);
+        }
+        .journal-textarea {
+            width: 100%;
+            min-height: 200px;
+            padding: 18px;
+            border: 2px solid rgba(8, 145, 178, 0.4);
+            border-radius: 16px;
+            font-family: 'Nunito', sans-serif;
+            font-size: 1em;
+            resize: vertical;
+            background: rgba(0, 0, 0, 0.4);
+            color: #fff;
+            line-height: 1.7;
+        }
+        .journal-textarea::placeholder { color: rgba(34, 211, 238, 0.5); }
+        .journal-textarea:focus {
+            outline: none;
+            border-color: var(--ocean);
+            box-shadow: 0 0 20px var(--ocean-glow);
+        }
+        .journal-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 12px;
+        }
+        .journal-status { font-size: 0.9em; color: var(--ocean-light); }
+        .save-entry-btn {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--coral) 100%);
+            border: none;
+            border-radius: 10px;
+            font-size: 0.9em;
+            color: #fff;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .save-entry-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 25px var(--ocean-glow); }
+
+        /* Past Entries */
+        .past-entries { margin-top: 22px; }
+        .entries-toggle {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(245, 158, 11, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            font-family: inherit;
+            font-size: 0.95em;
+            color: var(--sunset);
+        }
+        .entries-toggle:hover { background: rgba(245, 158, 11, 0.15); }
+        .entries-list { display: none; margin-top: 15px; }
+        .entries-list.open { display: block; }
+        .entry-card {
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 18px;
+            margin-bottom: 12px;
+            border-left: 4px solid var(--ocean);
+        }
+        .entry-date { font-size: 0.85em; color: rgba(255, 255, 255, 0.6); margin-bottom: 8px; }
+        .entry-text { font-size: 0.95em; color: rgba(255, 255, 255, 0.9); line-height: 1.6; white-space: pre-wrap; }
+        .entry-delete { float: right; background: none; border: none; color: rgba(255, 255, 255, 0.4); cursor: pointer; font-size: 1.2em; }
+        .entry-delete:hover { color: #ff6b6b; }
+
+        /* Inspiration Section */
+        .support-section {
+            margin-top: 35px;
+            padding-top: 30px;
+            border-top: 2px solid var(--sunset);
+        }
+        .support-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: var(--sunset);
+            margin-bottom: 12px;
+            font-size: 1.4em;
+            text-align: center;
+            text-shadow: 0 0 15px var(--sunset-glow);
+        }
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 20px;
+        }
+        @media (max-width: 600px) { .support-grid { grid-template-columns: 1fr; } }
+        .support-card {
+            background: rgba(255, 255, 255, 0.1);
+            border: 2px solid rgba(8, 145, 178, 0.3);
+            border-radius: 16px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        .support-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--ocean);
+            box-shadow: 0 10px 30px var(--ocean-glow);
+        }
+        .support-card .icon { font-size: 2.5em; margin-bottom: 12px; }
+        .support-card h4 { color: #fff; margin-bottom: 8px; }
+        .support-card p { color: rgba(255, 255, 255, 0.7); font-size: 0.9em; }
+
+        /* History Section */
+        .history-section {
+            margin-top: 30px;
+            padding-top: 25px;
+            border-top: 2px solid rgba(255, 255, 255, 0.15);
+        }
+        .history-section h3 {
+            font-family: 'Playfair Display', serif;
+            color: rgba(200, 200, 200, 1);
+            margin-bottom: 18px;
+            font-size: 1.15em;
+        }
+        .history-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 14px;
+            background: rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            margin-bottom: 10px;
+            font-size: 0.95em;
+        }
+        .history-item .energy-badge {
+            padding: 6px 12px;
+            border-radius: 15px;
+            font-size: 0.85em;
+            font-weight: 600;
+            color: #fff;
+        }
+        .history-item .energy-badge.flowing { background: #059669; }
+        .history-item .energy-badge.sparking { background: #F59E0B; }
+        .history-item .energy-badge.stormy { background: #7C3AED; }
+        .history-item .energy-badge.drifting { background: #0891B2; }
+        .history-item .energy-badge.beached { background: #F97066; }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            padding: 30px 20px;
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 0.9em;
+        }
+        .footer .brand {
+            font-family: 'Playfair Display', serif;
+            color: var(--ocean-light);
+            text-shadow: 0 0 10px var(--ocean-glow);
+            font-size: 1.1em;
+            letter-spacing: 3px;
+        }
+
+        /* Energy Detail View */
+        .energy-detail { display: none; }
+        .energy-detail.active { display: block; }
+        .energy-header {
+            text-align: center;
+            padding: 28px;
+            border-radius: 20px;
+            margin-bottom: 28px;
+            color: #fff;
+        }
+        .energy-header.flowing { background: linear-gradient(135deg, #059669 0%, #047857 100%); }
+        .energy-header.sparking { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); }
+        .energy-header.stormy { background: linear-gradient(135deg, #7C3AED 0%, #6D28D9 100%); }
+        .energy-header.drifting { background: linear-gradient(135deg, #0891B2 0%, #0E7490 100%); }
+        .energy-header.beached { background: linear-gradient(135deg, #F97066 0%, #E11D48 100%); }
+        .energy-header .icon { font-size: 3.5em; margin-bottom: 12px; }
+        .energy-header h2 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.8em;
+            margin-bottom: 6px;
+        }
+        .energy-header .zone { font-size: 0.95em; opacity: 0.9; }
+
+        /* Explanation Cards */
+        .explanation-card {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 16px;
+            padding: 22px;
+            margin-bottom: 18px;
+        }
+        .explanation-card h4 {
+            font-family: 'Playfair Display', serif;
+            color: var(--sunset);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            font-size: 1.1em;
+        }
+        .explanation-card p { color: rgba(255, 255, 255, 0.9); line-height: 1.7; }
+        .explanation-card.holistic {
+            background: linear-gradient(135deg, rgba(8, 145, 178, 0.2) 0%, rgba(245, 158, 11, 0.15) 100%);
+            border-left: 4px solid var(--ocean);
+        }
+        .explanation-card.wisdom {
+            background: linear-gradient(135deg, rgba(192, 132, 252, 0.2) 0%, rgba(8, 145, 178, 0.15) 100%);
+            border-left: 4px solid var(--orchid);
+        }
+
+        /* Back Button */
+        .back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 12px 22px;
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 0.95em;
+            color: #fff;
+            margin-bottom: 22px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+        .back-btn:hover { background: rgba(8, 145, 178, 0.2); border-color: var(--ocean); }
+
+        /* Category Tabs */
+        .practice-categories {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-bottom: 22px;
+        }
+        .category-tab {
+            padding: 12px 22px;
+            border-radius: 30px;
+            border: 2px solid rgba(8, 145, 178, 0.4);
+            background: rgba(255, 255, 255, 0.08);
+            cursor: pointer;
+            font-size: 0.95em;
+            font-weight: 600;
+            transition: all 0.3s;
+            color: var(--ocean-light);
+            font-family: inherit;
+        }
+        .category-tab:hover { border-color: var(--sunset); }
+        .category-tab.active {
+            background: linear-gradient(135deg, var(--ocean) 0%, var(--coral) 100%);
+            color: #fff;
+            border-color: transparent;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .fade-in { animation: fadeIn 0.5s ease-out; }
+
+        /* Mobile Responsive */
+        @media (max-width: 600px) {
+            .container { padding: 15px; }
+            .main-card { padding: 22px; border-radius: 24px; }
+            .energy-option { padding: 18px; }
+            .energy-icon { font-size: 2.2em; width: 55px; }
+            .header h1 { font-size: 2.2em; }
+            .mystic-lotus { font-size: 2em; top: 10px; right: 10px; }
+            .practice-categories { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 10px; }
+            .category-tab { white-space: nowrap; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Tropical Flower -->
+    <div class="mystic-lotus" onclick="createLeafBurst(event)">🌺</div>
+
+    <!-- Ocean Shimmer -->
+    <div class="aurora"></div>
+
+    <!-- Tropical Lights Container -->
+    <div class="fireflies-container" id="firefliesContainer"></div>
+
+    <!-- Floating Elements Container -->
+    <div class="leaves-container" id="leavesContainer"></div>
+
+    <div class="container">
+        <div class="header">
+            <div class="cover-video-container">
+                <video class="cover-video" autoplay loop muted playsinline>
+                    <source src="safi-cover.mp4" type="video/mp4">
+                </video>
+            </div>
+            <p class="greeting" id="greeting">Welcome, Safi</p>
+            <h1>TROPICAL INK</h1>
+            <div class="subtitle">Your Creative Island</div>
+            <div class="tagline">"Where words wash ashore like seashells"</div>
+        </div>
+
+        <div class="main-card">
+            <!-- Step 1: Creative Mood Check -->
+            <div id="energySelector" class="fade-in">
+                <div class="energy-question">
+                    <h2>How's the creative tide?</h2>
+                    <p>Just noticing, no right answers. Whatever you pick is the right one.</p>
+                </div>
+
+                <div class="energy-grid">
+                    <div class="energy-option flowing" onclick="selectEnergy('flowing')">
+                        <div class="energy-icon">🌊</div>
+                        <div class="energy-info">
+                            <h3>Flowing</h3>
+                            <p>Words are coming, ideas feel alive</p>
+                        </div>
+                    </div>
+
+                    <div class="energy-option sparking" onclick="selectEnergy('sparking')">
+                        <div class="energy-icon">🌅</div>
+                        <div class="energy-info">
+                            <h3>Sparking</h3>
+                            <p>A million ideas, can't land on one</p>
+                        </div>
+                    </div>
+
+                    <div class="energy-option stormy" onclick="selectEnergy('stormy')">
+                        <div class="energy-icon">🌀</div>
+                        <div class="energy-info">
+                            <h3>Stormy</h3>
+                            <p>Feelings are big and everything's loud</p>
+                        </div>
+                    </div>
+
+                    <div class="energy-option drifting" onclick="selectEnergy('drifting')">
+                        <div class="energy-icon">🐚</div>
+                        <div class="energy-info">
+                            <h3>Drifting</h3>
+                            <p>Empty page energy, nothing's coming</p>
+                        </div>
+                    </div>
+
+                    <div class="energy-option beached" onclick="selectEnergy('beached')">
+                        <div class="energy-icon">🏝️</div>
+                        <div class="energy-info">
+                            <h3>Beached</h3>
+                            <p>Stuck, frustrated, or just done</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button class="continue-btn" id="continueBtn" onclick="showEnergyDetail()" disabled>
+                    Explore the Island
+                </button>
+
+                <!-- Writing Styles Section -->
+                <div class="soul-section">
+                    <h3>Ways to Write</h3>
+                    <p>Different doors into the same creative world - pick whatever calls to you</p>
+
+                    <div class="holistic-grid">
+                        <div class="holistic-card freewrite" onclick="selectHolistic('freewrite')">
+                            <div class="holistic-card-header">
+                                <span class="icon">🌿</span>
+                                <h4>Freewriting</h4>
+                            </div>
+                            <p>No rules, just let it flow</p>
+                        </div>
+
+                        <div class="holistic-card poetry" onclick="selectHolistic('poetry')">
+                            <div class="holistic-card-header">
+                                <span class="icon">🦋</span>
+                                <h4>Poetry</h4>
+                            </div>
+                            <p>Feelings in fragments</p>
+                        </div>
+
+                        <div class="holistic-card storytelling" onclick="selectHolistic('storytelling')">
+                            <div class="holistic-card-header">
+                                <span class="icon">🐠</span>
+                                <h4>Storytelling</h4>
+                            </div>
+                            <p>Build worlds, lose yourself in them</p>
+                        </div>
+
+                        <div class="holistic-card letters" onclick="selectHolistic('letters')">
+                            <div class="holistic-card-header">
+                                <span class="icon">🌺</span>
+                                <h4>Letters</h4>
+                            </div>
+                            <p>Write to anyone, send or keep</p>
+                        </div>
+                    </div>
+
+                    <div id="holisticDetail" class="holistic-detail"></div>
+                </div>
+
+                <!-- Creative Sparks Section -->
+                <div class="soul-section">
+                    <h3>Creative Sparks</h3>
+                    <p>Little ideas that might be interesting - take them or leave them</p>
+
+                    <div class="practice-list">
+                        <div class="practice-item" onclick="this.classList.toggle('expanded')">
+                            <div class="practice-header">
+                                <h4>🎲 Random Word Game</h4>
+                            </div>
+                            <div class="practice-content">
+                                <ul class="practice-ideas">
+                                    <li>Pick any object you can see right now</li>
+                                    <li>Write whatever comes to mind about it - a memory, a story, a feeling, absolute nonsense</li>
+                                    <li>There's literally no wrong way to do this</li>
+                                </ul>
+                                <div class="practice-tip">
+                                    Sometimes the weirdest starting points lead to the best writing. A half-eaten banana has launched entire novels.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="practice-item" onclick="this.classList.toggle('expanded')">
+                            <div class="practice-header">
+                                <h4>🎧 Soundtrack Writing</h4>
+                            </div>
+                            <div class="practice-content">
+                                <ul class="practice-ideas">
+                                    <li>Put on a song - any song</li>
+                                    <li>Write whatever the music makes you see, feel, or imagine</li>
+                                    <li>You could describe a scene, write lyrics, or just scribble vibes</li>
+                                </ul>
+                                <div class="practice-tip">
+                                    Music and writing light up the same creative pathways. Some writers can ONLY write with music on.
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="practice-item" onclick="this.classList.toggle('expanded')">
+                            <div class="practice-header">
+                                <h4>🔮 "What If" Game</h4>
+                            </div>
+                            <div class="practice-content">
+                                <ul class="practice-ideas">
+                                    <li>Start with "What if..." and finish it with the wildest thing you can think of</li>
+                                    <li>What if the ocean could talk? What if colours had flavours? What if you could rewrite one day?</li>
+                                    <li>Follow wherever it takes you</li>
+                                </ul>
+                                <div class="practice-tip">
+                                    Every great story started as a "what if." J.K. Rowling's was "what if a boy didn't know he was a wizard?"
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Island Wisdom Section -->
+                <div class="nature-section">
+                    <h4>Messages from the Island</h4>
+                    <p style="text-align: center; color: rgba(255,255,255,0.7); margin-bottom: 15px; font-size: 0.9em;">Tap for a thought from the island creatures</p>
+                    <div class="nature-wisdom">
+                        <div class="nature-message" onclick="showNatureMessage('turtle')">
+                            <div class="nature-icon">🐢</div>
+                            <p>Sea Turtle</p>
+                        </div>
+                        <div class="nature-message" onclick="showNatureMessage('dolphin')">
+                            <div class="nature-icon">🐬</div>
+                            <p>Dolphin</p>
+                        </div>
+                        <div class="nature-message" onclick="showNatureMessage('parrot')">
+                            <div class="nature-icon">🦜</div>
+                            <p>Parrot</p>
+                        </div>
+                    </div>
+                    <div id="natureMessage" style="margin-top: 15px; padding: 15px; background: rgba(245, 158, 11, 0.15); border-radius: 12px; display: none;">
+                        <p id="natureMessageText" style="font-family: 'Playfair Display', serif; font-style: italic; color: var(--sunset-light); text-align: center;"></p>
+                    </div>
+                </div>
+
+                <!-- Writer's Toolkit Section -->
+                <div class="soul-section">
+                    <h3>Writer's Toolkit</h3>
+                    <p>Explore the building blocks of storytelling - tap any that interest you</p>
+
+                    <div class="neuro-grid">
+                        <div class="neuro-card character" onclick="selectNeuro('character')">
+                            <div class="neuro-card-header">
+                                <span class="icon">🧑‍🎤</span>
+                                <h4>CHARACTER</h4>
+                            </div>
+                            <p>The people who live in your stories</p>
+                        </div>
+
+                        <div class="neuro-card world" onclick="selectNeuro('world')">
+                            <div class="neuro-card-header">
+                                <span class="icon">🗺️</span>
+                                <h4>WORLD</h4>
+                            </div>
+                            <p>The places your stories happen</p>
+                        </div>
+
+                        <div class="neuro-card voice" onclick="selectNeuro('voice')">
+                            <div class="neuro-card-header">
+                                <span class="icon">🎙️</span>
+                                <h4>VOICE</h4>
+                            </div>
+                            <p>How your writing sounds and feels</p>
+                        </div>
+
+                        <div class="neuro-card plot" onclick="selectNeuro('plot')">
+                            <div class="neuro-card-header">
+                                <span class="icon">🧩</span>
+                                <h4>PLOT</h4>
+                            </div>
+                            <p>What happens and why it matters</p>
+                        </div>
+                    </div>
+
+                    <div id="neuroDetail" class="neuro-detail"></div>
+                </div>
+
+                <!-- Ocean Breathing -->
+                <div class="soul-section">
+                    <h3>Ocean Breathing</h3>
+                    <p>If you fancy it - breathe with the tide</p>
+
+                    <div class="breath-timer">
+                        <div class="breath-circle" id="breathCircle">
+                            Breathe
+                        </div>
+                        <p class="breath-instruction" id="breathInstruction">The circle breathes like waves - you can follow along or just watch</p>
+                    </div>
+                </div>
+
+                <!-- Tidal Thoughts (Decision Matrix) -->
+                <div class="matrix-section">
+                    <h3>Tidal Thoughts</h3>
+                    <p style="text-align: center; color: rgba(255,255,255,0.7); margin-bottom: 18px;">Dump whatever's swirling around your head, then sort it if you like</p>
+
+                    <div class="matrix-input">
+                        <input type="text" id="matrixInput" class="matrix-text-input" placeholder="What's on your mind? Type and tap where it goes...">
+                    </div>
+
+                    <div class="quick-add-buttons" style="display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 15px; justify-content: center;">
+                        <button class="quick-add-btn do-now-btn" onclick="addToQuadrant('doNow', event)">🔥 Now</button>
+                        <button class="quick-add-btn schedule-btn" onclick="addToQuadrant('schedule', event)">🌅 Later</button>
+                        <button class="quick-add-btn delegate-btn" onclick="addToQuadrant('delegate', event)">👋 Someone Else</button>
+                        <button class="quick-add-btn drop-btn" onclick="addToQuadrant('drop', event)">🌊 Let It Go</button>
+                    </div>
+
+                    <div class="decision-matrix">
+                        <div class="matrix-labels-top">
+                            <span></span>
+                            <span class="matrix-label">⚡ URGENT</span>
+                            <span class="matrix-label">🌴 NOT URGENT</span>
+                        </div>
+                        <div class="matrix-row">
+                            <span class="matrix-label-side">⭐ MATTERS</span>
+                            <div class="matrix-quadrant do-now" onclick="addToQuadrant('doNow', event)">
+                                <div class="quadrant-header">🔥 Now</div>
+                                <div class="quadrant-items" id="doNow"></div>
+                            </div>
+                            <div class="matrix-quadrant schedule" onclick="addToQuadrant('schedule', event)">
+                                <div class="quadrant-header">🌅 Later</div>
+                                <div class="quadrant-items" id="schedule"></div>
+                            </div>
+                        </div>
+                        <div class="matrix-row">
+                            <span class="matrix-label-side">🤷 MEH</span>
+                            <div class="matrix-quadrant delegate" onclick="addToQuadrant('delegate', event)">
+                                <div class="quadrant-header">👋 Someone Else</div>
+                                <div class="quadrant-items" id="delegate"></div>
+                            </div>
+                            <div class="matrix-quadrant drop" onclick="addToQuadrant('drop', event)">
+                                <div class="quadrant-header">🌊 Let It Go</div>
+                                <div class="quadrant-items" id="drop"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="matrix-actions">
+                        <span class="save-status" id="matrixStatus">Auto-saved</span>
+                        <button class="clear-dump-btn" onclick="clearMatrix()">🌊 Clear All</button>
+                    </div>
+                </div>
+
+                <!-- Writing Journal -->
+                <div class="journal-section">
+                    <h3>Safi's Writing Cove</h3>
+                    <p style="text-align: center; color: rgba(255,255,255,0.7); margin-bottom: 18px;">A private place for your words - messy, polished, or anything in between</p>
+
+                    <div class="prompt-chips">
+                        <span class="prompt-chip" onclick="insertPrompt('The ocean sounds like...')">The ocean sounds like...</span>
+                        <span class="prompt-chip" onclick="insertPrompt('If I could go anywhere...')">If I could go anywhere...</span>
+                        <span class="prompt-chip" onclick="insertPrompt('A colour that describes today:')">A colour that describes today:</span>
+                        <span class="prompt-chip" onclick="insertPrompt('Dear future me,')">Dear future me,</span>
+                    </div>
+
+                    <textarea id="journalEntry" class="journal-textarea" placeholder="This is your space, Safi. Write anything, everything, or nothing at all..."></textarea>
+
+                    <div class="journal-actions">
+                        <span class="journal-status" id="journalStatus">Saved on your device only - totally private</span>
+                        <button class="save-entry-btn" onclick="saveJournalEntry()">Keep This</button>
+                    </div>
+
+                    <div class="past-entries" id="pastEntries" style="display: none;">
+                        <button class="entries-toggle" onclick="togglePastEntries()">
+                            <span>Past Writing</span>
+                            <span class="toggle-icon" id="entriesIcon">+</span>
+                        </button>
+                        <div class="entries-list" id="entriesList"></div>
+                    </div>
+                </div>
+
+                <!-- Support & Inspiration -->
+                <div class="support-section">
+                    <h3>If You Need It</h3>
+                    <p style="text-align: center; color: rgba(255,255,255,0.7); margin-bottom: 10px;">These are always here, no pressure</p>
+
+                    <div class="support-grid">
+                        <div class="support-card" onclick="window.open('https://www.childline.org.uk/', '_blank')">
+                            <div class="icon">💬</div>
+                            <h4>Childline</h4>
+                            <p>Free chat & support: 0800 1111</p>
+                        </div>
+                        <div class="support-card" onclick="window.open('https://www.youngminds.org.uk/', '_blank')">
+                            <div class="icon">🧠</div>
+                            <h4>YoungMinds</h4>
+                            <p>Mental health support for young people</p>
+                        </div>
+                        <div class="support-card" onclick="window.open('https://www.ocdaction.org.uk/', '_blank')">
+                            <div class="icon">💙</div>
+                            <h4>OCD Action</h4>
+                            <p>Support & info for OCD</p>
+                        </div>
+                        <div class="support-card" onclick="window.open('https://www.pdasociety.org.uk/', '_blank')">
+                            <div class="icon">🌈</div>
+                            <h4>PDA Society</h4>
+                            <p>Understanding & support for PDA</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History -->
+                <div class="history-section" id="historySection" style="display: none;">
+                    <h3>Recent Check-Ins</h3>
+                    <div id="historyList"></div>
+                </div>
+            </div>
+
+            <!-- Step 2: Mood Detail & Ideas -->
+            <div id="energyDetail" class="energy-detail"></div>
+        </div>
+
+        <div class="footer">
+            <p class="brand">TROPICAL INK</p>
+            <p style="margin-top: 8px;">Made with love for Safi | Your words stay on your device</p>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // VISUAL EFFECTS
+        // ============================================
+
+        function createFireflies() {
+            const container = document.getElementById('firefliesContainer');
+            const colors = ['#FCD34D', '#22D3EE', '#FDA4AF', '#34D399', '#DDD6FE'];
+
+            for (let i = 0; i < 60; i++) {
+                const firefly = document.createElement('div');
+                firefly.className = 'firefly';
+                firefly.style.left = Math.random() * 100 + '%';
+                firefly.style.top = Math.random() * 100 + '%';
+                firefly.style.animationDuration = (Math.random() * 4 + 3) + 's';
+                firefly.style.animationDelay = Math.random() * 4 + 's';
+                firefly.style.background = colors[Math.floor(Math.random() * colors.length)];
+                firefly.style.boxShadow = `0 0 8px ${colors[Math.floor(Math.random() * colors.length)]}`;
+                firefly.style.width = (Math.random() * 4 + 2) + 'px';
+                firefly.style.height = firefly.style.width;
+                container.appendChild(firefly);
+            }
+        }
+
+        function createLeaves() {
+            const container = document.getElementById('leavesContainer');
+            const items = ['🌺', '🌸', '🌴', '🍃', '🦋', '🐚'];
+
+            setInterval(() => {
+                if (Math.random() > 0.7) {
+                    const leaf = document.createElement('div');
+                    leaf.className = 'leaf';
+                    leaf.textContent = items[Math.floor(Math.random() * items.length)];
+                    leaf.style.top = (Math.random() * 60 + 10) + '%';
+                    leaf.style.animationDuration = (Math.random() * 15 + 20) + 's';
+                    container.appendChild(leaf);
+
+                    setTimeout(() => leaf.remove(), 35000);
+                }
+            }, 3000);
+        }
+
+        function createLeafBurst(event) {
+            const items = ['🌺', '✨', '🌸', '🐚', '🦋', '🌴', '💫'];
+            for (let i = 0; i < 20; i++) {
+                const item = document.createElement('div');
+                item.style.cssText = `
+                    position: fixed;
+                    font-size: 1.5em;
+                    pointer-events: none;
+                    z-index: 1000;
+                    left: ${event.clientX}px;
+                    top: ${event.clientY}px;
+                `;
+                item.textContent = items[Math.floor(Math.random() * items.length)];
+                document.body.appendChild(item);
+
+                const angle = (Math.random() * 360) * (Math.PI / 180);
+                const velocity = Math.random() * 100 + 50;
+                const vx = Math.cos(angle) * velocity;
+                const vy = Math.sin(angle) * velocity;
+
+                let x = 0, y = 0, opacity = 1, rotation = 0;
+                const animate = () => {
+                    x += vx * 0.02;
+                    y += vy * 0.02 + 1;
+                    opacity -= 0.015;
+                    rotation += 5;
+                    item.style.transform = `translate(${x}px, ${y}px) rotate(${rotation}deg)`;
+                    item.style.opacity = opacity;
+                    if (opacity > 0) requestAnimationFrame(animate);
+                    else item.remove();
+                };
+                requestAnimationFrame(animate);
+            }
+        }
+
+        createFireflies();
+        createLeaves();
+
+        // ============================================
+        // DATA: Creative Moods and Writing Ideas
+        // ============================================
+
+        const ENERGY_STATES = {
+            'flowing': {
+                icon: '🌊',
+                name: 'Flowing',
+                zone: "The words are coming - ride the wave",
+                color: 'flowing',
+                experience: "Your creative mind is open and ideas are moving through you. This is a gorgeous place to be. Words might feel easy, images vivid, and stories alive. Enjoy it.",
+                holistic: "When creativity flows, your brain is in a relaxed-alert state - not trying too hard, not holding back. It's like the perfect wave that carries you without effort.",
+                wisdom: "This is YOUR wave. There's no right way to ride it. Write fast, write slow, write messy. Whatever you create right now is exactly what it's meant to be.",
+                categories: [
+                    {
+                        id: 'ride',
+                        name: '🌊 Ride It',
+                        tools: [
+                            { id: 'deep-dive', name: 'Deep Dive', icon: '🤿', ideas: ["Pick a character or scene that's been living in your head and go deep. What do they smell? What are they afraid of? What's in their pockets?", "Write the scene you've been avoiding - the hard one, the emotional one, the one that matters. You're in the right headspace for it.", "Try writing from a perspective you've never tried. An animal, an object, someone completely unlike you."], tip: "When flow is happening, the best thing you can do is get out of your own way. Don't edit, don't judge, just write." },
+                            { id: 'capture', name: 'Capture Ideas', icon: '📸', ideas: ["While your mind is open, jot down story ideas, character names, cool phrases - anything that sparks. Future-you will thank present-you.", "Write the opening line of five different stories. Don't finish any of them. Just collect beginnings.", "Describe the world outside your window as if you're seeing it for the first time."], tip: "Creative flow is like a tide - it comes and goes. Capturing ideas while the tide is in means you'll have treasure when it goes out." }
+                        ]
+                    }
+                ]
+            },
+            'sparking': {
+                icon: '🌅',
+                name: 'Sparking',
+                zone: "A million ideas, none of them landing",
+                color: 'sparking',
+                experience: "Your brain is firing in all directions - there's so much you COULD write about that you can't pick one thing. Ideas are crashing into each other like waves. It's exciting but also kind of exhausting.",
+                holistic: "A sparking mind isn't broken - it's actually incredibly creative. The challenge isn't having ideas, it's that your brain is serving up a whole buffet when you only need one plate.",
+                wisdom: "You don't have to pick the BEST idea. You just have to pick ONE. Any one. The others will wait. They always do.",
+                categories: [
+                    {
+                        id: 'focus',
+                        name: '🎯 Land One',
+                        tools: [
+                            { id: 'coin-flip', name: 'Coin Flip Writing', icon: '🪙', ideas: ["Write down two ideas. Flip a coin (or just pick). Whatever you land on, write about it for just 5 minutes. That's it.", "If you hate what you picked after 2 minutes, that's useful information. Switch to the other one.", "The point isn't to choose perfectly. It's to start."], tip: "Perfectionism loves to disguise itself as 'I just haven't found the right idea yet.' Sometimes the right idea is whichever one you actually write." },
+                            { id: 'idea-dump', name: 'Idea Dump', icon: '🌋', ideas: ["Set a timer for 3 minutes. Write down every single idea in your head - one line each. Don't filter, don't judge.", "When the timer stops, look at the list. Circle the one that makes your stomach do a little flip. Start there.", "Or don't circle any. Just having them out of your head might be enough for today."], tip: "Getting ideas OUT of your head and ONTO paper is half the battle. Your brain can stop trying to hold them all." }
+                        ]
+                    }
+                ]
+            },
+            'stormy': {
+                icon: '🌀',
+                name: 'Stormy',
+                zone: "Big feelings, everything's loud",
+                color: 'stormy',
+                experience: "Everything feels intense right now. Maybe anxious, maybe frustrated, maybe a feeling that doesn't even have a name. That's completely okay. Big feelings are part of being human, and honestly? Some of the best writing in history came from stormy days.",
+                holistic: "Storms are powerful. They're not comfortable, but they're not wrong. Your feelings aren't a problem to solve - they're energy that can move through you, especially through writing.",
+                wisdom: "You don't have to feel better right now. You don't have to fix anything. If writing helps, write. If it doesn't, that's fine too. This storm will pass - they always do.",
+                categories: [
+                    {
+                        id: 'channel',
+                        name: '🌀 Channel It',
+                        tools: [
+                            { id: 'rage-page', name: 'The Rage Page', icon: '⚡', ideas: ["Write it ugly. Write it angry. Write every unfair, furious, messy thought. No one will ever see this but you.", "Describe your feelings as weather. Is it a hurricane? A fog? Thunder with no rain? Give it detail.", "Write a letter to whoever or whatever is making you feel this way. Be as honest as you want. You never have to send it."], tip: "Writing when you're feeling stormy isn't about making something beautiful. It's about getting the storm OUT of you and onto the page where it can't hurt you." },
+                            { id: 'escape-hatch', name: 'Escape Hatch', icon: '🚪', ideas: ["Write yourself into a completely different world. Somewhere safe, somewhere wild, somewhere that isn't here.", "Create a character who feels exactly how you feel - then give them something you don't have right now. A friend, a superpower, a moment of peace.", "Describe the most peaceful place you can imagine in ridiculous detail. The temperature, the sounds, the light."], tip: "Escapism gets a bad reputation, but sometimes your brain needs a holiday. Fiction is the cheapest flight there is." }
+                        ]
+                    }
+                ]
+            },
+            'drifting': {
+                icon: '🐚',
+                name: 'Drifting',
+                zone: "Empty page, empty head",
+                color: 'drifting',
+                experience: "The creative well feels dry. You might want to write but nothing's coming, or maybe you don't even want to write and that feels weird too. Either way, you're here, and that counts.",
+                holistic: "Drifting isn't failure - it's a natural part of the creative cycle. Even the ocean has low tide. The water always comes back.",
+                wisdom: "You don't owe anyone words today. Not even yourself. But if you want to gently invite them back, sometimes the smallest, silliest thing can open the door.",
+                categories: [
+                    {
+                        id: 'gentle',
+                        name: '🌱 Gentle Starts',
+                        tools: [
+                            { id: 'tiny-things', name: 'Tiny Things', icon: '🔍', ideas: ["Write one sentence. That's it. About anything. The colour of the ceiling. What you had for lunch. Done.", "List five things you can see right now. Not as a writing exercise - just as a way to look at the world.", "Write a haiku. It's only 17 syllables. The whole thing could be about a sandwich and it would still be a poem."], tip: "When everything feels too much, make it as small as possible. One sentence is infinitely more than no sentences." },
+                            { id: 'borrowed-words', name: 'Borrowed Words', icon: '📚', ideas: ["Open any book to a random page. Read one line. Write a response to it - agree, argue, continue the story.", "Look up the word of the day. Write something using it, even if it's just 'I don't know what this word means but it sounds like...'", "Copy out a paragraph from a writer you love. Sometimes just the act of writing someone else's words wakes up your own."], tip: "Every writer borrows. It's not cheating - it's how creativity works. You borrow a spark, and your brain makes its own fire." }
+                        ]
+                    }
+                ]
+            },
+            'beached': {
+                icon: '🏝️',
+                name: 'Beached',
+                zone: "Stuck, done, over it",
+                color: 'beached',
+                experience: "Everything feels hard and you might not even know why. Maybe it's frustration, maybe exhaustion, maybe that feeling where nothing sounds good and everything sounds annoying. That's a real feeling and it's allowed.",
+                holistic: "Being beached isn't permanent - it just means you've landed somewhere uncomfortable for a bit. The tide will shift. It might not feel like it right now, but it will.",
+                wisdom: "You don't have to write. You don't have to be creative. You don't have to do anything with this moment except exist in it. That is genuinely enough.",
+                categories: [
+                    {
+                        id: 'rest',
+                        name: '🏖️ Just Be',
+                        tools: [
+                            { id: 'permission-slip', name: 'Permission Slip', icon: '📝', ideas: ["You have full permission to close this app and do absolutely nothing creative today. Seriously.", "If you want to stay, try just doodling words. Not sentences, not stories. Just random words that feel nice in your mouth. Velvet. Cinnamon. Archipelago.", "Write a complaint letter to the universe. Make it dramatic. Make it funny if you can. Make it real."], tip: "Rest is not laziness. Rest is your creative brain recharging. The most productive thing you can do sometimes is absolutely nothing." },
+                            { id: 'comfort', name: 'Comfort Things', icon: '🧸', ideas: ["Think about a comfort thing - a blanket, a pet, a show, a person. Write why it makes you feel safe, even just one line.", "Describe your perfect lazy day in as much detail as you want. No alarms, no plans, just you.", "Write down one thing that went okay today. It can be tiny. You got dressed. You drank water. You opened this app."], tip: "On beached days, the bravest thing you can do is be gentle with yourself. That's not weakness - that's wisdom." }
+                        ]
+                    }
+                ]
+            }
+        };
+
+        const WRITING_STYLES = {
+            freewrite: {
+                name: 'Freewriting',
+                description: 'The only rule is there are no rules',
+                practices: [
+                    { name: "Stream of consciousness", desc: "Write whatever comes out, don't stop to think" },
+                    { name: "Timed freewrite", desc: "Set a timer, write until it rings, don't look back" },
+                    { name: "Unsent messages", desc: "Write texts you'll never send - honest, raw, real" },
+                    { name: "Dream journal", desc: "Write down the weird bits from last night's dreams" }
+                ]
+            },
+            poetry: {
+                name: 'Poetry',
+                description: 'Words don\'t have to rhyme to be poetry',
+                practices: [
+                    { name: "Blackout poetry", desc: "Take a page of text, black out words until a poem appears" },
+                    { name: "List poems", desc: "Just a list of things - 'Things I'd tell my younger self'" },
+                    { name: "Found poetry", desc: "Arrange overheard conversations or signs into verse" },
+                    { name: "Haiku challenge", desc: "5-7-5 syllables. That's it. About absolutely anything" }
+                ]
+            },
+            storytelling: {
+                name: 'Storytelling',
+                description: 'Build worlds and live in them for a while',
+                practices: [
+                    { name: "Micro fiction", desc: "Tell a whole story in under 100 words" },
+                    { name: "Character interview", desc: "Interview your character - ask them weird questions" },
+                    { name: "Scene sketch", desc: "Write one scene - no beginning or end needed" },
+                    { name: "Alternate history", desc: "Pick a moment in your life. What if it went differently?" }
+                ]
+            },
+            letters: {
+                name: 'Letters',
+                description: 'Write to anyone - past, present, future, fictional',
+                practices: [
+                    { name: "Letter to future you", desc: "What would 25-year-old Safi want to know?" },
+                    { name: "Letter to a character", desc: "Write to someone from a book, film, or show" },
+                    { name: "Gratitude letter", desc: "Tell someone why they matter (send it or don't)" },
+                    { name: "Letter from an object", desc: "What would your phone write to you if it could?" }
+                ]
+            }
+        };
+
+        const WRITERS_TOOLKIT = {
+            character: { name: 'Character', icon: '🧑‍🎤', questions: ['What does your character do when nobody\'s watching?', 'What lie do they tell themselves?', 'What\'s in their search history?', 'What would they never forgive?'], sparks: ['Give them a habit that annoys everyone around them', 'What did they want to be when they were 7?', 'Write their worst day - then their best', 'What song is stuck in their head right now?'] },
+            world: { name: 'World', icon: '🗺️', questions: ['What does the air smell like in your world?', 'What\'s illegal there that shouldn\'t be?', 'What do people do for fun?', 'What\'s the one thing everyone knows but nobody talks about?'], sparks: ['Start with one room. Describe every detail.', 'What\'s the weather like, and how does it affect people\'s moods?', 'What\'s the most beautiful place in your world?', 'What would a tourist guide warn visitors about?'] },
+            voice: { name: 'Voice', icon: '🎙️', questions: ['Does your narrator sound like they\'re talking to a friend or giving a speech?', 'How long are your sentences? Short and punchy or long and winding?', 'What words does your narrator overuse?', 'Would your reader trust this narrator?'], sparks: ['Rewrite the same scene in three different voices', 'Try writing how you actually talk - slang, half-finished thoughts, all of it', 'Write one paragraph as a news report, then as a diary entry', 'Remove every adjective from a paragraph and see what happens'] },
+            plot: { name: 'Plot', icon: '🧩', questions: ['What does your character want more than anything?', 'What\'s stopping them from getting it?', 'What\'s the worst thing that could happen to them?', 'How are they different at the end than the beginning?'], sparks: ['Start at the end. Write the last page first.', 'Take a fairy tale and set it in modern day', 'Write a story where the villain wins', 'What if two of your characters swapped lives for a day?'] }
+        };
+
+        const NATURE_MESSAGES = {
+            turtle: [
+                "Slow is not the same as stuck. You're moving at exactly your own pace.",
+                "The sea turtle has survived for 100 million years by just... being a turtle. You don't need to be anything other than what you are.",
+                "Home is wherever you feel safe. You can carry that feeling with you.",
+                "The ocean doesn't rush. Neither do the best stories.",
+                "You've already survived every hard day you've ever had. That's a 100% success rate."
+            ],
+            dolphin: [
+                "Play isn't a waste of time. Play is how your brain learns to be brilliant.",
+                "Dolphins sleep with one eye open - you don't have to. It's okay to fully rest.",
+                "Your people are out there. The right pod always finds each other.",
+                "Joy is not something you earn. It's something you allow.",
+                "Making waves isn't always comfortable, but it's always interesting."
+            ],
+            parrot: [
+                "Your voice matters, even when it shakes. Especially when it shakes.",
+                "Copying others is how every artist starts. Then one day, your own colours show up.",
+                "Be loud when you need to be. Be quiet when you need to be. Both are powerful.",
+                "The most colourful birds in the jungle are the ones that stopped trying to blend in.",
+                "Say what you mean. Write what you feel. The rest is just noise."
+            ]
+        };
+
+        // ============================================
+        // APP STATE
+        // ============================================
+
+        let selectedEnergy = null;
+        let history = JSON.parse(localStorage.getItem('safi_history') || '[]');
+        let journalEntries = JSON.parse(localStorage.getItem('safi_journal') || '[]');
+
+        // ============================================
+        // FUNCTIONS
+        // ============================================
+
+        function updateGreeting() {
+            const hour = new Date().getHours();
+            const greetingEl = document.getElementById('greeting');
+            let greeting = 'Hey Safi';
+            if (hour < 6) greeting = 'Hey night owl Safi';
+            else if (hour < 12) greeting = 'Good morning, Safi';
+            else if (hour < 17) greeting = 'Hey Safi';
+            else if (hour < 21) greeting = 'Evening, Safi';
+            else greeting = 'Hey night owl Safi';
+            greetingEl.textContent = greeting;
+        }
+
+        function selectEnergy(energy) {
+            selectedEnergy = energy;
+            document.querySelectorAll('.energy-option').forEach(opt => opt.classList.remove('selected'));
+            document.querySelector(`.energy-option.${energy}`).classList.add('selected');
+            document.getElementById('continueBtn').disabled = false;
+        }
+
+        function showEnergyDetail() {
+            if (!selectedEnergy) return;
+            const state = ENERGY_STATES[selectedEnergy];
+            document.getElementById('energySelector').style.display = 'none';
+
+            const detailEl = document.getElementById('energyDetail');
+            detailEl.innerHTML = `
+                <button class="back-btn" onclick="goBack()">Back</button>
+                <div class="energy-header ${state.color}">
+                    <div class="icon">${state.icon}</div>
+                    <h2>${state.name}</h2>
+                    <div class="zone">${state.zone}</div>
+                </div>
+                <div class="explanation-card"><h4>What this might feel like</h4><p>${state.experience}</p></div>
+                <div class="explanation-card holistic"><h4>The bigger picture</h4><p>${state.holistic}</p></div>
+                <div class="explanation-card wisdom"><h4>A thought for you</h4><p>${state.wisdom}</p></div>
+                <div class="soul-section" style="border-top: none; margin-top: 0; padding-top: 0;">
+                    <h3>Ideas If You Want Them</h3>
+                    <div class="practice-categories">${state.categories.map((cat, i) => `<button class="category-tab ${i === 0 ? 'active' : ''}" onclick="showCategory('${cat.id}')">${cat.name}</button>`).join('')}</div>
+                    <div id="toolsList">${renderTools(state.categories[0].tools)}</div>
+                </div>
+            `;
+            detailEl.classList.add('active', 'fade-in');
+            addToHistory(selectedEnergy);
+        }
+
+        function renderTools(tools) {
+            return `<div class="practice-list">${tools.map(tool => `
+                <div class="practice-item" onclick="this.classList.toggle('expanded')">
+                    <div class="practice-header"><h4>${tool.icon} ${tool.name}</h4></div>
+                    <div class="practice-content">
+                        <ul class="practice-ideas">${tool.ideas.map(idea => `<li>${idea}</li>`).join('')}</ul>
+                        <div class="practice-tip">${tool.tip}</div>
+                    </div>
+                </div>
+            `).join('')}</div>`;
+        }
+
+        function showCategory(catId) {
+            const state = ENERGY_STATES[selectedEnergy];
+            const category = state.categories.find(c => c.id === catId);
+            document.querySelectorAll('.category-tab').forEach(tab => tab.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById('toolsList').innerHTML = renderTools(category.tools);
+        }
+
+        function goBack() {
+            document.getElementById('energyDetail').classList.remove('active');
+            document.getElementById('energyDetail').innerHTML = '';
+            document.getElementById('energySelector').style.display = 'block';
+            selectedEnergy = null;
+            document.querySelectorAll('.energy-option').forEach(opt => opt.classList.remove('selected'));
+            document.getElementById('continueBtn').disabled = true;
+        }
+
+        function selectHolistic(styleId) {
+            document.querySelectorAll('.holistic-card').forEach(card => card.classList.remove('selected'));
+            document.querySelector(`.holistic-card.${styleId}`).classList.add('selected');
+            const data = WRITING_STYLES[styleId];
+            document.getElementById('holisticDetail').innerHTML = `
+                <h4>${data.name}</h4>
+                <p style="margin-bottom: 15px; font-style: italic;">${data.description}</p>
+                <ul>${data.practices.map(p => `<li style="margin-bottom: 10px;"><strong>${p.name}</strong> - ${p.desc}</li>`).join('')}</ul>
+            `;
+            document.getElementById('holisticDetail').classList.add('active');
+        }
+
+        function selectNeuro(toolkit) {
+            document.querySelectorAll('.neuro-card').forEach(card => card.classList.remove('selected'));
+            document.querySelector(`.neuro-card.${toolkit}`).classList.add('selected');
+            const data = WRITERS_TOOLKIT[toolkit];
+            document.getElementById('neuroDetail').innerHTML = `
+                <h4>${data.icon} ${data.name}</h4>
+                <p><strong>Questions to explore:</strong></p>
+                <ul>${data.questions.map(q => `<li>${q}</li>`).join('')}</ul>
+                <p style="margin-top: 15px;"><strong>Sparks to try:</strong></p>
+                <ul>${data.sparks.map(s => `<li>${s}</li>`).join('')}</ul>
+            `;
+            document.getElementById('neuroDetail').classList.add('active');
+        }
+
+        function showNatureMessage(creature) {
+            const messages = NATURE_MESSAGES[creature];
+            const message = messages[Math.floor(Math.random() * messages.length)];
+            const messageEl = document.getElementById('natureMessage');
+            const textEl = document.getElementById('natureMessageText');
+            textEl.textContent = `"${message}"`;
+            messageEl.style.display = 'block';
+        }
+
+        function addToHistory(energy) {
+            history.unshift({ energy: energy, timestamp: new Date().toISOString() });
+            if (history.length > 10) history = history.slice(0, 10);
+            localStorage.setItem('safi_history', JSON.stringify(history));
+            updateHistoryDisplay();
+        }
+
+        function updateHistoryDisplay() {
+            if (history.length === 0) return;
+            document.getElementById('historySection').style.display = 'block';
+            document.getElementById('historyList').innerHTML = history.slice(0, 5).map(entry => {
+                const state = ENERGY_STATES[entry.energy];
+                const date = new Date(entry.timestamp);
+                const timeStr = date.toLocaleString('en-GB', { weekday: 'short', hour: '2-digit', minute: '2-digit' });
+                return `<div class="history-item"><span class="energy-badge ${entry.energy}">${state.icon} ${state.name}</span><span style="color: rgba(255,255,255,0.6);">${timeStr}</span></div>`;
+            }).join('');
+        }
+
+        // ============================================
+        // TIDAL THOUGHTS (DECISION MATRIX)
+        // ============================================
+
+        let matrixData = JSON.parse(localStorage.getItem('safi_matrix') || '{"doNow":[],"schedule":[],"delegate":[],"drop":[]}');
+
+        function loadMatrix() {
+            ['doNow', 'schedule', 'delegate', 'drop'].forEach(quadrantId => {
+                const container = document.getElementById(quadrantId);
+                container.innerHTML = '';
+                (matrixData[quadrantId] || []).forEach((item, index) => {
+                    container.innerHTML += createMatrixItemHTML(quadrantId, item, index);
+                });
+            });
+        }
+
+        function createMatrixItemHTML(quadrantId, text, index) {
+            return `<div class="matrix-item">
+                <span>${text}</span>
+                <button class="matrix-item-delete" onclick="deleteMatrixItem('${quadrantId}', ${index}, event)">x</button>
+            </div>`;
+        }
+
+        function addToQuadrant(quadrantId, event) {
+            if (event) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            const input = document.getElementById('matrixInput');
+            const text = input.value.trim();
+            if (!text) {
+                input.placeholder = "Type something first!";
+                setTimeout(() => {
+                    input.placeholder = "What's on your mind? Type and tap where it goes...";
+                }, 2000);
+                return;
+            }
+
+            if (!matrixData[quadrantId]) matrixData[quadrantId] = [];
+            matrixData[quadrantId].push(text);
+            saveMatrix();
+            input.value = '';
+            loadMatrix();
+
+            const statusEl = document.getElementById('matrixStatus');
+            statusEl.textContent = '✨ Sorted!';
+            setTimeout(() => { statusEl.textContent = 'Auto-saved'; }, 1000);
+        }
+
+        function deleteMatrixItem(quadrantId, index, event) {
+            event.stopPropagation();
+            matrixData[quadrantId].splice(index, 1);
+            saveMatrix();
+            loadMatrix();
+        }
+
+        function saveMatrix() {
+            localStorage.setItem('safi_matrix', JSON.stringify(matrixData));
+        }
+
+        function clearMatrix() {
+            if (confirm('Clear everything? This can\'t be undone!')) {
+                matrixData = { doNow: [], schedule: [], delegate: [], drop: [] };
+                saveMatrix();
+                loadMatrix();
+            }
+        }
+
+        // ============================================
+        // WRITING JOURNAL
+        // ============================================
+
+        const journalEl = document.getElementById('journalEntry');
+        journalEl.value = localStorage.getItem('safi_journal_draft') || '';
+        journalEl.addEventListener('input', () => localStorage.setItem('safi_journal_draft', journalEl.value));
+
+        function insertPrompt(prompt) {
+            journalEl.value = prompt + ' ';
+            journalEl.focus();
+        }
+
+        function saveJournalEntry() {
+            const text = journalEl.value.trim();
+            if (!text) return;
+            journalEntries.unshift({ text: text, timestamp: new Date().toISOString() });
+            localStorage.setItem('safi_journal', JSON.stringify(journalEntries));
+            journalEl.value = '';
+            localStorage.setItem('safi_journal_draft', '');
+            document.getElementById('journalStatus').textContent = 'Kept safe';
+            updateJournalDisplay();
+        }
+
+        function updateJournalDisplay() {
+            if (journalEntries.length === 0) return;
+            document.getElementById('pastEntries').style.display = 'block';
+            document.getElementById('entriesList').innerHTML = journalEntries.map((entry, i) => {
+                const date = new Date(entry.timestamp);
+                const dateStr = date.toLocaleString('en-GB', { weekday: 'short', day: 'numeric', month: 'short', hour: '2-digit', minute: '2-digit' });
+                return `<div class="entry-card"><button class="entry-delete" onclick="deleteEntry(${i})">x</button><div class="entry-date">${dateStr}</div><div class="entry-text">${entry.text}</div></div>`;
+            }).join('');
+        }
+
+        function togglePastEntries() {
+            const list = document.getElementById('entriesList');
+            list.classList.toggle('open');
+            document.getElementById('entriesIcon').textContent = list.classList.contains('open') ? '-' : '+';
+        }
+
+        function deleteEntry(index) {
+            if (confirm('Delete this entry?')) {
+                journalEntries.splice(index, 1);
+                localStorage.setItem('safi_journal', JSON.stringify(journalEntries));
+                updateJournalDisplay();
+            }
+        }
+
+        // ============================================
+        // OCEAN BREATHING
+        // ============================================
+
+        const breathCircle = document.getElementById('breathCircle');
+        const breathPhases = ['Breathe in...', 'Hold...', 'Breathe out...', 'Rest...'];
+        let phaseIndex = 0;
+
+        setInterval(() => {
+            breathCircle.textContent = breathPhases[phaseIndex];
+            phaseIndex = (phaseIndex + 1) % breathPhases.length;
+        }, 2000);
+
+        // ============================================
+        // INITIALIZE
+        // ============================================
+
+        updateGreeting();
+        updateHistoryDisplay();
+        updateJournalDisplay();
+        loadMatrix();
+    </script>
+</body>
+</html>
